@@ -73,7 +73,8 @@ pipeline {
                       variable: 'KUBECONFIG')
                     ]) {
                     sh 'echo "mafei -----$KUBECONFIG_CREDENTIAL_ID"'
-                    sh 'envsubst < deploy/dev-ol/** | kubectl apply -f -'
+                    sh 'envsubst < deploy/dev-ol/devops-sample.yaml | kubectl apply -f -'
+                    sh 'envsubst < deploy/dev-ol/devops-sample-svc.yaml | kubectl apply -f -'
                   }
                }
             }
