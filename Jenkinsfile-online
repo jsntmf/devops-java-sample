@@ -63,24 +63,19 @@ pipeline {
           when{
             branch 'master'
           }
-          steps {
-            input(id: 'deploy-to-dev', message: 'deploy to dev?')
-            kubernetesDeploy(configs: 'deploy/dev-ol/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
-          }
 
           steps {
-
            input(id: 'deploy-to-dev', message: 'deploy to dev?')
-                   container ('maven') {
-                      withCredentials([
-                        kubeconfigFile(
-                          credentialsId: $KUBECONFIG_CREDENTIAL_ID,
-                          variable: 'KUBECONFIG')
-                        ]) {
-                        sh 'envsubst < deploy/dev-ol/** | kubectl apply -f -'
-                      }
-                   }
-                }
+               container ('maven') {
+                  withCredentials([
+                    kubeconfigFile(
+                      credentialsId: $KUBECONFIG_CREDENTIAL_ID,
+                      variable: 'KUBECONFIG')
+                    ]) {
+                    sh 'envsubst < deploy/dev-ol/** | kubectl apply -f -'
+                  }
+               }
+            }
         }
         stage('push with tag'){
           when{
